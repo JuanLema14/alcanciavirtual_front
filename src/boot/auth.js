@@ -14,7 +14,7 @@ export default boot(({ app, router, store, Vue }) => {
       if (!autenticacionStore.loggedIn()) {
         // No loggedIn
         console.log("No loggedIn");
-        const response = autenticacionStore
+        return autenticacionStore
           .fetch()
           .then((data) => {
             if (!autenticacionStore.loggedIn()) {

@@ -96,7 +96,7 @@ export const useAuthStore = defineStore("autenticacion", () => {
             }
           })
           .catch((error) => {
-            console.log(error);
+            reject(new Error("No authorization token found"));
           });
       } else {
         reject(new Error("No authorization token found"));
