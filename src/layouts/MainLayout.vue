@@ -132,46 +132,22 @@ function nextMorph() {
 const links1 = ref([
   {
     text: 'Home',
-    caption: 'home',
+    caption: 'Inicio',
     icon: 'home',
     link: '/main'
   },
   {
-    text: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: '/'
+    text: 'Mis servicios',
+    caption: 'Servicios',
+    icon: 'wallet',
+    link: '/servicios'
   },
   {
-    text: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: '/'
+    text: 'Lista de Metas',
+    caption: 'Metas',
+    icon: 'shopping_cart',
+    link: '/metas'
   },
-  {
-    text: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: '/'
-  },
-  {
-    text: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: '/'
-  },
-  {
-    text: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: '/'
-  },
-  {
-    text: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: '/'
-  }
 ])
 
 const links2 = ref([])

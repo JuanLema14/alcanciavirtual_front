@@ -8,6 +8,16 @@ const routes = [
         meta: { auth: true },
         component: () => import("pages/IndexPage.vue"),
       },
+      {
+        path: "/servicios",
+        meta: { auth: true },
+        component: () => import("pages/ServiciosPage.vue"),
+      },
+      {
+        path: "/metas",
+        meta: { auth: true },
+        component: () => import("pages/MetasPage.vue"),
+      },
     ],
   },
   {
