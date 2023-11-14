@@ -83,11 +83,11 @@
         background: rgb(251, 249, 249);
         background: linear-gradient(
           180deg,
-          rgba(251, 249, 249, 1) 0%,
-          rgba(233, 227, 237, 1) 15%,
-          rgba(240, 208, 225, 1) 30%,
-          rgba(237, 186, 213, 1) 35%,
-          rgba(235, 179, 211, 1) 49.6%,
+          rgb(255, 255, 255) 0%,
+          rgb(250, 250, 250) 15%,
+          rgba(231, 202, 242, 1) 30%,
+          rgba(152, 100, 173, 1) 40%,
+          rgba(97, 49, 128, 1) 49.6%,
           rgba(248, 229, 240, 1) 49%,
           rgba(241, 237, 240, 1) 55%,
           rgba(239, 226, 230, 1) 67%,
@@ -284,7 +284,7 @@ function toggleLeftDrawer() {
 
 <style lang="scss" scoped>
 .bg {
-  background-image: url("src/assets/Fondo.png");
+  background-image: url("src/assets/Fondo2.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

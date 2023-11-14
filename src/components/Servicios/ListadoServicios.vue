@@ -140,17 +140,19 @@
             <span class="text-secondary">{{ props.row.nombre_servicio }}</span>
           </q-td>
           <q-td key="valor_servicio" :props="props">
-            <span class="text-secondary">${{
-              fixedNumber(props.row.valor_servicio)
-            }}</span>
+            <span class="text-secondary"
+              >${{ fixedNumber(props.row.valor_servicio) }}</span
+            >
           </q-td>
           <q-td key="estado" :props="props">
-            <q-badge
-              style="border-radius: 25px"
+            <div
               :class="verificarEstadoBadge(props.row.estado)"
+              style="border-radius: 25px; width: fit-content"
             >
-              <span class="text-subtitle1">{{ props.row.estado }}</span>
-            </q-badge>
+              <q-badge style="border-radius: 25px" class="glassMorph">
+                <span class="text-subtitle1">{{ props.row.estado }}</span>
+              </q-badge>
+            </div>
           </q-td>
           <q-td key="cantidad_meses" :props="props">
             <span class="text-secondary">{{ props.row.cantidad_meses }}</span>
@@ -164,13 +166,21 @@
             >
           </q-td>
           <q-td key="tipo_servicio" :props="props">
-            <q-badge
-              style="border-radius: 25px"
+            <div
               :class="verificarTipoBadge(props.row.tipo_servicio)"
+              style="border-radius: 25px; width: fit-content"
             >
-              <q-icon :name="verificarTipoIcon(props.row.tipo_servicio)" class="q-pr-xs" size="1vmax" />
-              <span class="text-subtitle1">{{ props.row.tipo_servicio }}</span>
-            </q-badge>
+              <q-badge style="border-radius: 25px" class="glassMorph">
+                <q-icon
+                  :name="verificarTipoIcon(props.row.tipo_servicio)"
+                  class="q-pr-xs"
+                  size="1vmax"
+                />
+                <span class="text-subtitle1">{{
+                  props.row.tipo_servicio
+                }}</span>
+              </q-badge>
+            </div>
           </q-td>
           <q-td auto-width>
             <div>
@@ -662,5 +672,13 @@ async function eliminarServicio() {
     rgba(181, 115, 255, 1) 27%,
     rgba(76, 0, 161, 1) 100%
   );
+}
+
+.glassMorph {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(11.7px);
+  -webkit-backdrop-filter: blur(11.7px);
 }
 </style>
