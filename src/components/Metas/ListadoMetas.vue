@@ -140,19 +140,37 @@
             <span class="text-secondary">{{ props.row.descripcion_meta }}</span>
           </q-td>
           <q-td key="cantidad_meta" :props="props">
-            <span class="text-secondary">{{ props.row.cantidad_meta }}</span>
+            <span class="text-secondary"
+              >${{ fixedNumber(props.row.cantidad_meta) }}</span
+            >
           </q-td>
           <q-td key="cantidad_abonada" :props="props">
-            <span class="text-secondary">{{ props.row.cantidad_abonada }}</span>
+            <span class="text-secondary"
+              >${{ fixedNumber(props.row.cantidad_abonada) }}</span
+            >
           </q-td>
           <q-td key="estado" :props="props">
-            <span class="text-secondary">{{ props.row.estado }}</span>
+            <q-badge
+              style="border-radius: 25px"
+              :class="verificarEstadoBadge(props.row.estado)"
+            >
+              <span class="text-subtitle1">{{ props.row.estado }}</span>
+            </q-badge>
           </q-td>
           <q-td key="fecha_creacion" :props="props">
-            <span class="text-secondary">{{ props.row.fecha_creacion }}</span>
+            <span class="text-secondary">{{
+              formDate(props.row.fecha_creacion)
+            }}<q-tooltip class="bg-grey-6">{{
+                formFecha(props.row.fecha_creacion)
+              }}</q-tooltip></span>
           </q-td>
           <q-td key="fecha_esperada" :props="props">
-            <span class="text-secondary">{{ props.row.fecha_esperada }}</span>
+            <span class="text-secondary"
+              >{{ formDate(props.row.fecha_esperada) }}
+              <q-tooltip class="bg-grey-6">{{
+                formFecha(props.row.fecha_esperada)
+              }}</q-tooltip></span
+            >
           </q-td>
           <q-td auto-width>
             <div>
@@ -359,6 +377,85 @@ function accionesFunc(idParm) {
   acciones.value = true;
 }
 
+/* ----- Estado ----- */
+
+function verificarEstadoBadge(estado) {
+  let colorClass = "";
+  switch (estado) {
+    case "Completado":
+      colorClass = "q-pa-xs ColorCo";
+      break;
+
+    case "Iniciado":
+      colorClass = "q-pa-xs ColorIn";
+      break;
+
+    case "Cancelado":
+      colorClass = "q-pa-xs ColorCan";
+      break;
+
+    default:
+      colorClass = "q-pa-xs ColorDF";
+      break;
+  }
+  return colorClass;
+}
+
+function fixedNumber(number) {
+  return new Intl.NumberFormat("es-CO", {
+    maximumFractionDigits: 2,
+  }).format(+number);
+}
+
+function formDate(parametroFecha) {
+  const fecha = new Date(parametroFecha);
+  const fechaSinHora = fecha.toLocaleDateString();
+  return fechaSinHora;
+}
+
+function formFecha(parametroFecha) {
+  const meses = [
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre",
+  ];
+  // Creamos array con los días de la semana
+  const diasSemana = [
+    "Domingo",
+    "Lunes",
+    "martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado",
+  ];
+
+  // Creamos el objeto fecha instanciándolo con la clase Date
+  const fecha = new Date(parametroFecha);
+  const hora = " a las " + fecha.toLocaleTimeString();
+  // Construimos el formato de salida
+  const fechaModificada =
+    diasSemana[fecha.getDay()] +
+    ", " +
+    fecha.getDate() +
+    " de " +
+    meses[fecha.getMonth()] +
+    " de " +
+    fecha.getUTCFullYear() +
+    hora;
+
+  return fechaModificada;
+}
+
 /* -----  Acciones  ----- */
 
 function editarMetas() {
@@ -404,5 +501,42 @@ async function eliminarMeta() {
 
 .hovClick:hover {
   background: #e4e5e7;
+}
+
+/* Colores estado */
+
+.ColorCan {
+  background: rgb(251, 194, 59);
+  background: linear-gradient(
+    100deg,
+    rgba(251, 194, 59, 1) 19%,
+    rgba(246, 86, 55, 1) 74%
+  );
+}
+
+.ColorDF {
+  background: rgb(186, 203, 222);
+  background: linear-gradient(
+    100deg,
+    rgba(186, 203, 222, 1) 19%,
+    rgba(157, 171, 194, 1) 74%
+  );
+}
+
+.ColorCo {
+  background: rgb(144, 232, 45);
+  background: linear-gradient(
+    100deg,
+    rgba(144, 232, 45, 1) 19%,
+    rgba(33, 178, 54, 1) 74%
+  );
+}
+.ColorIn {
+  background: rgb(98, 166, 255);
+  background: linear-gradient(
+    100deg,
+    rgba(98, 166, 255, 1) 19%,
+    rgba(12, 99, 212, 1) 74%
+  );
 }
 </style>

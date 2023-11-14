@@ -140,19 +140,37 @@
             <span class="text-secondary">{{ props.row.nombre_servicio }}</span>
           </q-td>
           <q-td key="valor_servicio" :props="props">
-            <span class="text-secondary">{{ props.row.valor_servicio }}</span>
+            <span class="text-secondary">${{
+              fixedNumber(props.row.valor_servicio)
+            }}</span>
           </q-td>
           <q-td key="estado" :props="props">
-            <span class="text-secondary">{{ props.row.estado }}</span>
+            <q-badge
+              style="border-radius: 25px"
+              :class="verificarEstadoBadge(props.row.estado)"
+            >
+              <span class="text-subtitle1">{{ props.row.estado }}</span>
+            </q-badge>
           </q-td>
           <q-td key="cantidad_meses" :props="props">
             <span class="text-secondary">{{ props.row.cantidad_meses }}</span>
           </q-td>
           <q-td key="fecha_pago" :props="props">
-            <span class="text-secondary">{{ props.row.fecha_pago }}</span>
+            <span class="text-secondary"
+              >{{ formDate(props.row.fecha_pago)
+              }}<q-tooltip class="bg-grey-6">{{
+                formFecha(props.row.fecha_pago)
+              }}</q-tooltip></span
+            >
           </q-td>
           <q-td key="tipo_servicio" :props="props">
-            <span class="text-secondary">{{ props.row.tipo_servicio }}</span>
+            <q-badge
+              style="border-radius: 25px"
+              :class="verificarTipoBadge(props.row.tipo_servicio)"
+            >
+              <q-icon :name="verificarTipoIcon(props.row.tipo_servicio)" class="q-pr-xs" size="1vmax" />
+              <span class="text-subtitle1">{{ props.row.tipo_servicio }}</span>
+            </q-badge>
           </q-td>
           <q-td auto-width>
             <div>
@@ -359,6 +377,153 @@ function accionesFunc(idParm) {
   acciones.value = true;
 }
 
+/* ----- Estado ----- */
+
+function verificarEstadoBadge(estado) {
+  let colorClass = "";
+  switch (estado) {
+    case "Pagado":
+      colorClass = "q-pa-xs ColorPa";
+      break;
+
+    case "Mora":
+      colorClass = "q-pa-xs ColorMor";
+      break;
+
+    case "PendientePago":
+      colorClass = "q-pa-xs ColorPen";
+      break;
+
+    default:
+      colorClass = "q-pa-xs ColorDF";
+      break;
+  }
+  return colorClass;
+}
+
+function fixedNumber(number) {
+  return new Intl.NumberFormat("es-CO", {
+    maximumFractionDigits: 2,
+  }).format(+number);
+}
+
+function formDate(parametroFecha) {
+  const fecha = new Date(parametroFecha);
+  const fechaSinHora = fecha.toLocaleDateString();
+  return fechaSinHora;
+}
+
+function formFecha(parametroFecha) {
+  const meses = [
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre",
+  ];
+  // Creamos array con los días de la semana
+  const diasSemana = [
+    "Domingo",
+    "Lunes",
+    "martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado",
+  ];
+
+  // Creamos el objeto fecha instanciándolo con la clase Date
+  const fecha = new Date(parametroFecha);
+  const hora = " a las " + fecha.toLocaleTimeString();
+  // Construimos el formato de salida
+  const fechaModificada =
+    diasSemana[fecha.getDay()] +
+    ", " +
+    fecha.getDate() +
+    " de " +
+    meses[fecha.getMonth()] +
+    " de " +
+    fecha.getUTCFullYear() +
+    hora;
+
+  return fechaModificada;
+}
+
+function verificarTipoBadge(estado) {
+  let colorClass = "";
+  switch (estado) {
+    case "Publico":
+      colorClass = "q-pa-xs ColorPu";
+      break;
+
+    case "Entretenimiento":
+      colorClass = "q-pa-xs ColorEn";
+      break;
+
+    case "Academico":
+      colorClass = "q-pa-xs ColorAc";
+      break;
+
+    case "Medico":
+      colorClass = "q-pa-xs ColorMed";
+      break;
+
+    case "Gastronomico":
+      colorClass = "q-pa-xs ColorGas";
+      break;
+
+    case "Transporte":
+      colorClass = "q-pa-xs ColorTra";
+      break;
+
+    default:
+      colorClass = "q-pa-xs ColorDF";
+      break;
+  }
+  return colorClass;
+}
+
+function verificarTipoIcon(estado) {
+  let iconName = "";
+  switch (estado) {
+    case "Publico":
+      iconName = "public";
+      break;
+
+    case "Entretenimiento":
+      iconName = "sports_esports";
+      break;
+
+    case "Academico":
+      iconName = "school";
+      break;
+
+    case "Medico":
+      iconName = "local_hospital";
+      break;
+
+    case "Gastronomico":
+      iconName = "lunch_dining";
+      break;
+
+    case "Transporte":
+      iconName = "local_taxi";
+      break;
+
+    default:
+      iconName = "psychology_alt";
+      break;
+  }
+  return iconName;
+}
+
 /* -----  Acciones  ----- */
 
 function editarServicios() {
@@ -404,5 +569,98 @@ async function eliminarServicio() {
 
 .hovClick:hover {
   background: #e4e5e7;
+}
+
+/* Colores estado */
+
+.ColorPen {
+  background: rgb(251, 194, 59);
+  background: linear-gradient(
+    100deg,
+    rgba(251, 194, 59, 1) 19%,
+    rgba(246, 86, 55, 1) 74%
+  );
+}
+
+.ColorDF {
+  background: rgb(186, 203, 222);
+  background: linear-gradient(
+    100deg,
+    rgba(186, 203, 222, 1) 19%,
+    rgba(157, 171, 194, 1) 74%
+  );
+}
+
+.ColorPa {
+  background: rgb(144, 232, 45);
+  background: linear-gradient(
+    100deg,
+    rgba(144, 232, 45, 1) 19%,
+    rgba(33, 178, 54, 1) 74%
+  );
+}
+.ColorMor {
+  background: rgb(255, 0, 99);
+  background: linear-gradient(
+    114deg,
+    rgba(255, 0, 99, 1) 27%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+
+/* Colores tipo */
+
+.ColorPu {
+  background: rgb(98, 166, 255);
+  background: linear-gradient(
+    100deg,
+    rgba(98, 166, 255, 1) 19%,
+    rgba(12, 99, 212, 1) 74%
+  );
+}
+
+.ColorEn {
+  background: rgb(255, 114, 169);
+  background: linear-gradient(
+    114deg,
+    rgba(255, 114, 169, 1) 27%,
+    rgba(187, 13, 81, 1) 100%
+  );
+}
+
+.ColorAc {
+  background: rgb(132, 255, 97);
+  background: linear-gradient(
+    114deg,
+    rgba(132, 255, 97, 1) 27%,
+    rgba(0, 167, 11, 1) 100%
+  );
+}
+
+.ColorMed {
+  background: rgb(247, 68, 68);
+  background: linear-gradient(
+    114deg,
+    rgba(247, 68, 68, 1) 27%,
+    rgba(168, 0, 0, 1) 100%
+  );
+}
+
+.ColorGas {
+  background: rgb(247, 167, 68);
+  background: linear-gradient(
+    114deg,
+    rgba(247, 167, 68, 1) 27%,
+    rgba(247, 227, 68, 1) 100%
+  );
+}
+
+.ColorTra {
+  background: rgb(181, 115, 255);
+  background: linear-gradient(
+    114deg,
+    rgba(181, 115, 255, 1) 27%,
+    rgba(76, 0, 161, 1) 100%
+  );
 }
 </style>
