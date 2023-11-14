@@ -14,9 +14,27 @@ const routes = [
         component: () => import("pages/ServiciosPage.vue"),
       },
       {
+        path: "servicios/editar/:idServicio",
+        component: () => import("src/pages/Servicios/EditarServicios.vue"),
+        props: true,
+      },
+      {
+        path: "servicios/crear",
+        component: () => import("src/pages/Servicios/CrearServicios.vue"),
+      },
+      {
         path: "metas",
         meta: { auth: true },
         component: () => import("pages/MetasPage.vue"),
+      },
+      {
+        path: "metas/editar/:idMeta",
+        component: () => import("src/pages/Metas/EditarMetas.vue"),
+        props: true,
+      },
+      {
+        path: "metas/crear",
+        component: () => import("src/pages/Metas/CrearMetas.vue"),
       },
     ],
   },
