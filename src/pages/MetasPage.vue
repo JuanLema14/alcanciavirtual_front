@@ -1,11 +1,22 @@
 <template>
   <q-page padding>
-    <!-- content -->
+    <migade-pan />
+    <div class="row q-pa-xl">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <listado-metas />
+      </div>
+    </div>
   </q-page>
 </template>
 
-<script>
-export default {
-  // name: 'PageName',
-}
+<script setup>
+import { defineAsyncComponent } from "vue";
+
+const MigadePan = defineAsyncComponent(() =>
+  import("src/components/MigadePan.vue")
+);
+
+const ListadoMetas = defineAsyncComponent(() =>
+  import("src/components/Metas/ListadoMetas.vue")
+);
 </script>

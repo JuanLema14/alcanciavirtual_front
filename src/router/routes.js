@@ -9,12 +9,12 @@ const routes = [
         component: () => import("pages/IndexPage.vue"),
       },
       {
-        path: "/servicios",
+        path: "servicios",
         meta: { auth: true },
         component: () => import("pages/ServiciosPage.vue"),
       },
       {
-        path: "/metas",
+        path: "metas",
         meta: { auth: true },
         component: () => import("pages/MetasPage.vue"),
       },
