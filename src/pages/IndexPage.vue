@@ -133,20 +133,29 @@
         </q-card>
       </div>
     </div>
-    <div class="flex flex-center">
-      <img src="~assets/cerdito_1.png" />
-    </div>
+
+    <!-- <div class="row q-col-gutter-sm flex flex-center q-pa-md ">
+      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 ">
+        <registro-ahorro/>
+      </div>
+    </div> -->
+
   </q-page>
 </template>
 
 <script setup>
-import { defineComponent } from "vue";
+import { defineComponent, defineAsyncComponent } from "vue";
+
+const RegistroAhorro = defineAsyncComponent(() =>
+  import("src/components/Ahorro/RegistroAhorro.vue")
+);
 defineComponent({
   name: "IndexPage",
 });
 </script>
 
 <style scoped>
+
 .warning {
   -webkit-box-shadow: -1px 14px 24px -5px rgba(57, 66, 196, 0.5);
   box-shadow: -1px 14px 24px -5px rgba(11, 19, 138, 0.2);
