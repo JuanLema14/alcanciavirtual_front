@@ -63,15 +63,22 @@ export const useServiciosStore = defineStore("storeServicios", () => {
   };
 
   async function agregarServicio(servicioParam) {
-    const params = {
-      servicioParam,
-    };
-
     try {
+      const params = {
+        params: {
+          nombre_servicio: servicioParam.nombre_servicio,
+          valor_servicio: +servicioParam.valor_servicio,
+          estado: servicioParam.estado.value,
+          cantidad_meses: servicioParam.cantidad_meses,
+          fecha_pago: servicioParam.fecha_pago,
+          tipo_servicio: servicioParam.tipo_servicio.value,
+        },
+      };
+
       const p = new Promise(async function (resolve, reject) {
         try {
           await axiosInstance
-            .post(RUTA_AGREGAR_SERVICIO, params)
+            .post(RUTA_AGREGAR_SERVICIO, null, params)
             .then((response) => {
               if (response.data) {
                 resolve(response.data);
@@ -127,18 +134,24 @@ export const useServiciosStore = defineStore("storeServicios", () => {
   }
 
   async function actualizarServicio(datosServicio) {
-    const params = {
-      datosServicio,
-    };
-
     try {
+      const params = {
+        id: datosServicio.id,
+        nombre_servicio: datosServicio.nombre_servicio,
+        valor_servicio: +datosServicio.valor_servicio,
+        estado: datosServicio.estado,
+        cantidad_meses: datosServicio.cantidad_meses,
+        fecha_pago: datosServicio.fecha_pago,
+        tipo_servicio: datosServicio.tipo_servicio,
+      };
+
       const p = new Promise(async function (resolve, reject) {
         try {
           await axiosInstance
-            .put(RUTA_ACTUALIZAR_SERVICIO, params)
+            .put(RUTA_ACTUALIZAR_SERVICIO + "/" + datosServicio.id, params)
             .then((response) => {
               if (response.data) {
-                resolve(response.data.ejecucion.datos);
+                resolve(response.data);
               } else {
                 reject(
                   new Error(

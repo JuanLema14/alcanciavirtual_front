@@ -64,14 +64,19 @@ export const useMetasStore = defineStore("storeMetas", () => {
 
   async function agregarMeta(metaParam) {
     const params = {
-      metaParam,
+      params: {
+        descripcion_meta: metaParam.descripcion_meta,
+        cantidad_meta: +metaParam.cantidad_meta,
+        estado: metaParam.estado.value,
+        cantidad_abonada: +metaParam.cantidad_abonada,
+        fecha_esperada: metaParam.fecha_esperada,
+      },
     };
-
     try {
       const p = new Promise(async function (resolve, reject) {
         try {
           await axiosInstance
-            .post(RUTA_AGREGAR_META, params)
+            .post(RUTA_AGREGAR_META, null, params)
             .then((response) => {
               if (response.data) {
                 resolve(response.data);
@@ -128,17 +133,22 @@ export const useMetasStore = defineStore("storeMetas", () => {
 
   async function actualizarMeta(datosMeta) {
     const params = {
-      datosMeta,
+      id: datosMeta.id,
+      descripcion_meta: datosMeta.descripcion_meta,
+      cantidad_meta: +datosMeta.cantidad_meta,
+      estado: datosMeta.estado,
+      cantidad_abonada: datosMeta.cantidad_abonada,
+      fecha_esperada: datosMeta.fecha_esperada,
     };
 
     try {
       const p = new Promise(async function (resolve, reject) {
         try {
           await axiosInstance
-            .put(RUTA_ACTUALIZAR_META, params)
+            .put(RUTA_ACTUALIZAR_META + "/" + datosMeta.id, params)
             .then((response) => {
               if (response.data) {
-                resolve(response.data.ejecucion.datos);
+                resolve(response.data);
               } else {
                 reject(
                   new Error(
