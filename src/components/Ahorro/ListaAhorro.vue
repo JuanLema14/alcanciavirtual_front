@@ -18,21 +18,6 @@
       <q-card-section>
         <div
           class="flex flex-center row hovClick"
-          @click="editarAhorros()"
-          style="border-radius: 20px; cursor: pointer"
-        >
-          <div class="q-pa-md">
-            <q-avatar color="primary" icon="edit" text-color="white" />
-          </div>
-          <q-item-section>
-            <div class="text-weight-bold text-subtitle2">Editar Ahorro</div>
-          </q-item-section>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div
-          class="flex flex-center row hovClick"
           @click="eliminarAhorro()"
           style="border-radius: 20px; cursor: pointer"
         >
@@ -98,19 +83,6 @@
         </q-toolbar>
       </template>
 
-      <!-- acciones superiores de la tabla -->
-
-      <template v-slot:top-right>
-        <q-btn
-          class="glossy"
-          rounded
-          dense
-          color="primary"
-          label="Registrar Ahorro"
-          icon-right="roofing"
-          @click="crearAhorro()"
-        />
-      </template>
 
       <!-- titulos de las columnas de la tabla -->
 
@@ -131,24 +103,24 @@
 
       <template v-slot:body="props">
         <q-tr :props="props" v-if="!loading">
-          <q-td key="tipo_ahorro" :props="props">
+          <q-td key="valorAhorro" :props="props">
+            <span class="text-secondary">${{ fixedNumber(props.row.valorAhorro) }}</span>
+          </q-td>
+          <q-td key="tipoAhorro" :props="props">
             <div
-              :class="verificarEstadoBadge(props.row.tipo_ahorro)"
+              :class="verificarEstadoBadge(props.row.tipoAhorro)"
               style="border-radius: 25px; width: fit-content"
             >
               <q-badge style="border-radius: 25px" class="glassMorph">
-                <span class="text-subtitle1">{{ props.row.tipo_ahorro }}</span>
+                <span class="text-subtitle1">{{ props.row.tipoAhorro }}</span>
               </q-badge>
             </div>
           </q-td>
-          <q-td key="valor_ahorro" :props="props">
-            <span class="text-secondary">${{ fixedNumber(props.row.valor_ahorro) }}</span>
-          </q-td>
-          <q-td key="fecha_ingreso" :props="props">
+          <q-td key="fechaIngreso" :props="props">
             <span class="text-secondary"
-              >{{ formDate(props.row.fecha_ingreso)
+              >{{ formDate(props.row.fechaIngreso)
               }}<q-tooltip class="bg-grey-6">{{
-                formFecha(props.row.fecha_ingreso)
+                formFecha(props.row.fechaIngreso)
               }}</q-tooltip></span
             >
           </q-td>
@@ -169,13 +141,13 @@
           </q-td>
         </q-tr>
         <q-tr v-else>
-          <q-td key="tipo_ahorro" :props="props">
+          <q-td key="tipoAhorro" :props="props">
             <q-skeleton width="5vmax" height="5px" />
           </q-td>
-          <q-td key="valor_ahorro" :props="props">
+          <q-td key="valorAhorro" :props="props">
             <q-skeleton width="5vmax" height="5px" />
           </q-td>
-          <q-td key="fecha_ingreso" :props="props">
+          <q-td key="fechaIngreso" :props="props">
             <q-skeleton width="5vmax" height="5px" />
           </q-td>
           <q-td auto-width>
@@ -204,21 +176,21 @@ const columns = [
   {
     format: (val) => `${val}`,
     label: "Valor del ahorro",
-    name: "valor_ahorro",
-    field: "valor_ahorro",
+    name: "valorAhorro",
+    field: "valorAhorro",
     align: "center",
   },
   {
     label: "Tipo de ahorro",
-    name: "tipo_ahorro",
-    field: "tipo_ahorro",
-    align: "center",
+    name: "tipoAhorro",
+    field: "tipoAhorro",
+    align: "left",
   },
   {
     label: "Fecha de Ingreso",
-    name: "fecha_ingreso",
-    field: "fecha_ingreso",
-    align: "center",
+    name: "fechaIngreso",
+    field: "fechaIngreso",
+    align: "left",
   },
 ];
 
@@ -333,14 +305,6 @@ function formFecha(parametroFecha) {
 
 /* -----  Acciones  ----- */
 
-function editarAhorros() {
-  router.push("/main/ahorros/editar/" + idAhorro.value);
-}
-
-function crearAhorro() {
-  router.push("/main/ahorros/crear/");
-}
-
 async function eliminarAhorro() {
   try {
     $q.loading.show({
@@ -348,7 +312,7 @@ async function eliminarAhorro() {
     });
     await ahorrosStore.retirarAhorro(+window.atob(idAhorro.value));
     acciones.value = false;
-    onRequest(1);
+    await ahorrosStore.cargarAhorros();
   } catch (error) {
     $q.notify({
       progress: true,

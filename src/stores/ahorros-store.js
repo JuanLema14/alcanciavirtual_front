@@ -8,12 +8,15 @@ const RUTA_AGREGAR_AHORRO = "/ahorro/agregarahorro";
 const RUTA_CONSULTAR_AHORRO = "/ahorro/consultarahorro";
 const RUTA_ACTUALIZAR_AHORRO = "/ahorro/actualizarahorro";
 const RUTA_RETIRAR_AHORRO = "/ahorro/retirarahorro";
+const RUTA_VALOR_AHORRO = "/usuario/valorahorrar";
+const RUTA_ACTUALIZAR_VALOR_A_AHORRAR = "/usuario/actualizarvalorahorrar";
 
 export const useAhorrosStore = defineStore("storeAhorros", () => {
   const ahorros = ref({
     data: [],
   });
 
+  const valorAAhorrar = ref(0);
   const ahorroTotal = ref(0);
 
   const cargarTotalAhorrado = async (sumarValorMetas) => {
@@ -26,9 +29,9 @@ export const useAhorrosStore = defineStore("storeAhorros", () => {
 
       return new Promise(async function (resolve, reject) {
         await axiosInstance
-          .get(RUTA_TOTAL_AHORROS, null, params)
+          .get(RUTA_TOTAL_AHORROS, params)
           .then((response) => {
-            if (response.data) {
+            if (response.data || response.data === 0) {
               ahorroTotal.value = response.data;
               resolve();
             } else {
@@ -196,13 +199,70 @@ export const useAhorrosStore = defineStore("storeAhorros", () => {
     }
   }
 
+  const cargarValorAAhorrar = async () => {
+    try {
+      return new Promise(async function (resolve, reject) {
+        await axiosInstance
+          .get(RUTA_VALOR_AHORRO)
+          .then((response) => {
+            if (response.data || response.data === 0) {
+              valorAAhorrar.value = response.data;
+              resolve();
+            } else {
+              reject(
+                new Error("Ha ocurrido un error, consulte con el Administrador")
+              );
+            }
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const actualizarValorAAhorrar = async (nuevoValorAAhorrar) => {
+    try {
+      const params = {
+        params: {
+          nuevoValorAAhorrar: +nuevoValorAAhorrar,
+        },
+      };
+
+      return new Promise(async function (resolve, reject) {
+        await axiosInstance
+          .put(RUTA_ACTUALIZAR_VALOR_A_AHORRAR, null, params)
+          .then((response) => {
+            if (response.data) {
+              resolve(response.data);
+            } else {
+              reject(
+                new Error("Ha ocurrido un error, consulte con el Administrador")
+              );
+            }
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return {
     cargarAhorros,
     agregarAhorro,
     consultarAhorro,
     actualizarAhorro,
     cargarTotalAhorrado,
+    actualizarValorAAhorrar,
+    cargarValorAAhorrar,
     retirarAhorro,
     ahorros,
+    ahorroTotal,
+    valorAAhorrar,
   };
 });

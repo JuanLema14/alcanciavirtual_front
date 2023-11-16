@@ -134,11 +134,11 @@
       </div>
     </div>
 
-    <!-- <div class="row q-col-gutter-sm flex flex-center q-pa-md ">
+    <div class="row q-col-gutter-sm flex flex-center q-pa-md ">
       <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 ">
         <registro-ahorro/>
       </div>
-    </div> -->
+    </div>
 
   </q-page>
 </template>
