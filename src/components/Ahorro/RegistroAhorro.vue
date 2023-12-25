@@ -241,17 +241,21 @@ const valorTotalAhorro = computed({
 });
 
 const imagenAhorro = computed(() => {
-  const porcentajeAhorro =
-    (ahorrosStore.ahorroTotal / valorAahorrar.value) * 100;
+  if (ahorrosStore.ahorroTotal !== 0) {
+    const porcentajeAhorro =
+      (ahorrosStore.ahorroTotal / valorAahorrar.value) * 100;
 
-  if (porcentajeAhorro < 10) {
-    return 0;
-  } else if (porcentajeAhorro >= 10 && porcentajeAhorro < 25) {
-    return 1;
-  } else if (porcentajeAhorro >= 25 && porcentajeAhorro < 70) {
-    return 2;
+    if (porcentajeAhorro < 10) {
+      return 0;
+    } else if (porcentajeAhorro >= 10 && porcentajeAhorro < 25) {
+      return 1;
+    } else if (porcentajeAhorro >= 25 && porcentajeAhorro < 70) {
+      return 2;
+    } else {
+      return 3;
+    }
   } else {
-    return 3;
+    return 0;
   }
 });
 
@@ -350,7 +354,7 @@ async function guardarValorAAlcanzar() {
   }
 }
 
-async function consultarTotal(){
+async function consultarTotal() {
   try {
     await ahorrosStore.cargarTotalAhorrado(sumarValorAhorradoenMetas.value);
   } catch (error) {
